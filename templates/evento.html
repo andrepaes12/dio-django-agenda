@@ -8,14 +8,15 @@
 <h2>Cadastrar Evento</h2>
 
 <form action="submit" method="post"> {% csrf_token %}
+    <input type="number" name="id_evento" id="" value="{{ evento.id }}" hidden>
     <label for="titulo">Título:</label><br>
-    <input type="text" name="titulo" id="" required><br>
+    <input type="text" name="titulo" id="" value="{{ evento.titulo }}" required><br>
     <label for="data_evento">Data do Evento:</label><br>
-    <input type="datetime-local" name="data_evento" id="" required><br>
+    <input type="datetime-local" name="data_evento" id="" value="{{ evento.get_data_input_evento }}" required><br>
     <label for="descricao">Descrição:</label><br>
-    <textarea name="descricao" id="" cols="24" rows="5"></textarea><br>
+    <textarea name="descricao" id="" cols="24" rows="5">{{ evento.descricao }}</textarea><br>
     <label for="local">Local:</label><br>
-    <input type="text" name="local" id=""><br><br>
+    <input type="text" name="local" id="" value="{{ evento.local }}"><br><br>
     <button type="submit">SALVAR</button>
     <a href="/">
         <button type="button">CANCELAR</button></a>
