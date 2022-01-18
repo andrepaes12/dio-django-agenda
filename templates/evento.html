@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Evento</title>
+</head>
+<body>
+<h2>Cadastrar Evento</h2>
+
+<form action="submit" method="post"> {% csrf_token %}
+    <label for="titulo">Título:</label><br>
+    <input type="text" name="titulo" id="" required><br>
+    <label for="data_evento">Data do Evento:</label><br>
+    <input type="datetime-local" name="data_evento" id="" required><br>
+    <label for="descricao">Descrição:</label><br>
+    <textarea name="descricao" id="" cols="24" rows="5"></textarea><br><br>
+    <button type="submit">SALVAR</button>
+    <a href="/">
+        <button type="button">CANCELAR</button></a>
+</form>
+</body>
+</html>

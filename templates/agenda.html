@@ -2,9 +2,14 @@
 
 {% block content %}
     <h2>Agendamentos</h2>
-        <ul style="font-size: 18px">
-            {% for evento in eventos %}
-                <li>Título: {{ evento.titulo }} <br> Data do evento: {{ evento.get_data_evento }}</li>
-            {% endfor %}
-        </ul>
+
+    <a href="evento/">
+        <button type="button">NOVO EVENTO</button>
+    </a>
+
+    <ul style="font-size: 18px">
+        {% for evento in eventos %}
+            <li>Título: {{ evento.titulo }} <br> Data do evento: {{ evento.get_data_evento }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
