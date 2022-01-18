@@ -3,6 +3,9 @@ from core.models import Evento
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from datetime import datetime, timedelta
+from django.http.response import Http404, JsonResponse
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -42,7 +45,9 @@ def lista_eventos(request):
     #evento = Evento.objects.get(pk=2)
     #evento = Evento.objects.all()
     usuario = request.user
-    evento = Evento.objects.filter(usuario=usuario)
+    data_corte = datetime.now() - timedelta(hours=1)
+    evento = Evento.objects.filter(usuario=usuario,
+                                   data_evento__gt=data_corte)
     dados = {'eventos': evento}
     #response = {'evento': evento}
     #return render(request, 'agenda.html', response)
@@ -56,6 +61,16 @@ def evento(request):
     if id_evento:
         dados['evento'] = Evento.objects.get(id=id_evento)
     return render(request, 'evento.html', dados)
+
+
+@login_required(login_url='/login/')
+def historico(request):
+    usuario = request.user
+    data_corte = datetime.now()
+    evento = Evento.objects.filter(usuario=usuario,
+                                   data_evento__lt=data_corte)
+    dados = {'eventos': evento}
+    return render(request, 'agenda.html', dados)
 
 
 @login_required(login_url='/login/')
@@ -86,9 +101,19 @@ def submit_evento(request):
 @login_required(login_url='/login/')
 def delete_evento(request, id_evento):
     usuario = request.user
-    evento = Evento.objects.get(id=id_evento)
+    try:
+        evento = Evento.objects.get(id=id_evento)
+    except Exception:
+        raise Http404()
     if usuario == evento.usuario:
         evento.delete()
+    else:
+        raise Http404()
     return redirect('/')
 
+#API (não exigir a autenticação)
+def json_lista_evento(request, id_usuario):
+    usuario = User.objects.get(id=id_usuario)
+    evento = Evento.objects.filter(usuario=usuario).values('id', 'titulo')
+    return JsonResponse(list(evento), safe=False)
 

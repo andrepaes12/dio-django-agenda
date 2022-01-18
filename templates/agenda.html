@@ -1,7 +1,7 @@
 {% extends "model-page.html" %}
 
 {% block content %}
-    <h2>Agendamentos</h2>
+    <h2 style="color: blue"><b>Agendamentos</b></h2>
 
     <a href="evento/">
         <button type="button">NOVO EVENTO</button>
@@ -10,10 +10,24 @@
     <ul style="font-size: 18px">
         {% for evento in eventos %}
             <li>
-                Título: {{ evento.titulo }} <br> Data do evento: {{ evento.get_data_evento }}
-                ( <a href="evento/?id={{ evento.id }}" style="color: blue"> Editar</a>
-                / <a href="evento/delete/{{ evento.id }}" style="color: red"> Excluir</a> )
+                <div style={% if evento.get_evento_atrasado %} "color: red"
+                     {% elif evento.get_evento_next %} "color: blue" {% endif %}>
+                    Título: {{ evento.titulo }} <br> Data do evento: {{ evento.get_data_evento }}
+                    ( <a href="evento/?id={{ evento.id }}">
+                        <button style="color: blue">Editar</button>
+                        </a>
+                    / <a href="evento/delete/{{ evento.id }}">
+                        <button style="color: red">Excluir</button>
+                        </a> )
+                </div>
             </li>
         {% endfor %}
     </ul>
+    <br>
+    <a href="http://127.0.0.1:8000/agenda/historico/">
+        <button type="button">VER HISTÓRICO</button>
+    </a>
+    <a href="../">
+        <button type="button" style="margin-left: 5px">VOLTAR</button>
+    </a>
 {% endblock %}
